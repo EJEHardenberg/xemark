@@ -5,28 +5,33 @@ xemark is a simple markdown grammar that allows for simple blog html to be gener
 
 #:id:Rules
 
+<
+- All formatting characters are the first character of a line
+- If you'd like no indent whatsover, escape the formatter with a !
+>
+
 ##In BNF:
 
-<char> ::= <ascii character>
-<text> ::= <char>, {<char>}
-<number> ::= '0' | '1' | '2' | '3' | '4' | '5'| '6' | '7' | '8' | '9' 
-<newline> ::= '\n'
-<tab> ::= '\t'
-<format_on> ::= <newline> | <tab>
-<escape> ::= '!' , <format_on>
-<header> ::= '#', {'#'}
-<item> ::= '-', {<char>}
-<list> ::= '<' <format> '>'
-<title> ::= '@', {<char>}, <newline>
-<identifier> ::= ":" <char> ,{ <char> } ":"
-<divide> ::= "=", {"="}
-<formatter> ::= <header> | <list> |  <divide> | <item>
-<format> ::= <format_on> <formatter> <newline>
-<term> ::= <formatter>[<identifier>] | <escape> | <text>
-<page> ::= <title> 
-<version> ::= <number> , {<number>}
-<start> ::= '#XEMARK_' <version> <newline>
-<document> ::= <start> <title> , [{<term>}]
+ <char> ::= <ascii character>
+ <text> ::= <char>, {<char>}
+ <number> ::= '0' | '1' | '2' | '3' | '4' | '5'| '6' | '7' | '8' | '9' 
+ <newline> ::= '\n'
+ <tab> ::= '\t'
+ <format_on> ::= <newline> | <tab>
+ <escape> ::= '!' , <format_on>
+ <header> ::= '#', {'#'}
+ <item> ::= '-', {<char>}
+ <list> ::= '<' <format> '>'
+ <title> ::= '@', {<char>}, <newline>
+ <identifier> ::= ":" <char> ,{ <char> } ":"
+ <divide> ::= "=", {"="}
+ <formatter> ::= <header> | <list> |  <divide> | <item>
+ <format> ::= <format_on> <formatter> <newline>
+ <term> ::= <formatter>[<identifier>] | <escape> | <text>
+ <page> ::= <title> 
+ <version> ::= <number> , {<number>}
+ <start> ::= '#XEMARK_' <version> <newline>
+ <document> ::= <start> <title> , [{<term>}]
 
 
 
