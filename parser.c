@@ -189,13 +189,24 @@ int renderFormat(){
 				printf("%s\n", BUFFER);
 			}else{
 				//Formatting time:
-				
+				extern int STATE; STATE = FORMATTING_ON;
+				int i,identified;
 				switch(BUFFER[0]){
 					case '#':
 						handleHeader(length);
 						break;
 					case '<':
-
+						//Print out the beginning of the list
+						printf("<ul");
+						i=1;
+						identified = BUFFER[i] == ':' ? TRUE : FALSE;
+						if(identified){
+							printf(" id=\"");
+							for(i++; BUFFER[i] != ':' && BUFFER[i] != '\0'; ++i)
+								putc(BUFFER[i],stdout);
+							printf("\"");
+						}
+						printf(">\n");
 						break;
 					case '>':
 
@@ -211,10 +222,12 @@ int renderFormat(){
 						break;
 				}
 
+
 			}
 		}else{
 			//Not a special charactor. If we are in a special state that uses normal character such as :identifiers: then
-			//that will be handled seperately by the ident handler, so we just print the lines
+			//that will be handled seperately by the ident handler, so we just print the lines... but perhaps we should
+			//detect double new lines somehow and shit out <p> tags?
 			printf("%s\n", BUFFER);
 		}
 	}

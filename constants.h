@@ -18,4 +18,4 @@ char * SPECIAL_CHARS = "#<>-!=:";
 //States
 #define FORMATTING_ON 1
 #define FORMATTING_OFF 0
-
+int STATE = FORMATTING_OFF;
