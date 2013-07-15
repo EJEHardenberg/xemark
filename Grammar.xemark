@@ -3,7 +3,7 @@ xemark is a simple markdown grammar that allows for simple blog html to be gener
 
 @XEMARK Grammer Document
 
-#Rules
+#:id:Rules
 
 ##In BNF:
 
