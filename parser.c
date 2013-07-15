@@ -10,6 +10,7 @@ int compare(char *, char *);
 void openHTMLHeader();
 void closeHTMLHeader();
 void closeHTMLBody();
+void handleHeader();
 
 char lastRead = 0;
 
@@ -144,6 +145,36 @@ int isSpecial(int c){
 	return FALSE;
 }
 
+void handleHeader(int length){
+	int i,hLevel,identified;
+	//Count the number of consectuive # and render the proper beginning of a header tag
+	for(i=1; i < length && BUFFER[i] == '#'; ++i)
+		;
+	hLevel = i;
+	printf("<h%d", hLevel);
+	//Check for an identifier:
+	if(BUFFER[i] == ':'){
+		identified = TRUE;
+		printf(" id=\"");
+	}else
+		identified = FALSE;
+	if(identified == TRUE){
+		for(i++; BUFFER[i] != ':' && BUFFER[i] != '\0'; ++i){
+			putc(BUFFER[i],stdout);
+		}
+		printf("\">");
+	}else{
+		putc('>',stdout);
+		putc(BUFFER[i],stdout);
+	}
+	//Print out whatever is left in the buffer
+	for(i++; i < length; ++i)
+		putc(BUFFER[i],stdout);
+	printf("</h%d>\n", hLevel);
+
+	return;
+}
+
 int renderFormat(){
 	//If the last read character was a newline, and the current character is a special one.
 	//Then we must render the formatter
@@ -158,34 +189,10 @@ int renderFormat(){
 				printf("%s\n", BUFFER);
 			}else{
 				//Formatting time:
-				int i,hLevel,identified;
+				
 				switch(BUFFER[0]){
 					case '#':
-						//Count the number of consectuive # and render the proper beginning of a header tag
-						for(i=1; i < length && BUFFER[i] == '#'; ++i)
-							;
-						hLevel = i;
-						printf("<h%d", hLevel);
-						//Check for an identifier:
-						if(BUFFER[i] == ':'){
-							identified = TRUE;
-							printf(" id=\"");
-						}else
-							identified = FALSE;
-						if(identified == TRUE){
-							for(i++; BUFFER[i] != ':' && BUFFER[i] != '\0'; ++i){
-								putc(BUFFER[i],stdout);
-							}
-							printf("\">");
-						}else{
-							putc('>',stdout);
-							putc(BUFFER[i],stdout);
-						}
-						//Print out whatever is left in the buffer
-						for(i++; i < length; ++i)
-							putc(BUFFER[i],stdout);
-						printf("</h%d>\n", hLevel);
-
+						handleHeader(length);
 						break;
 					case '<':
 
