@@ -1,0 +1,161 @@
+#include <stdio.h>
+
+#include "constants.h"
+
+int readLine();
+int start(); 
+int compareStem(char *,char *);
+int compare(char *, char *);
+void openHTMLHeader();
+void closeHTMLHeader();
+
+char lastRead = -1;
+
+int main()
+{
+	extern char BUFFER[];
+	int i;
+	for(i=0; i < MAXBUFFER; ++i){
+		BUFFER[i] = '\0';
+	}
+
+	if(start() == FALSE){
+		return 1;
+	}
+
+	openHTMLHeader();
+
+	if(loadTitle() == FALSE){
+		return 1;
+	}
+
+	printf("%s\n", BUFFER,stdout);
+	closeHTMLHeader();
+
+	//Now actually parse the document terms
+
+	closeHTMLBody();
+	return 0;
+}
+
+int readLine(){
+	extern char BUFFER[];
+	int c;
+	int i;
+	for(i=0, c= getchar(); c != EOF && c != '\n'; c =getchar(), ++i){
+		BUFFER[i] = c;
+	}
+	BUFFER[i] = '\0';
+	lastRead = c;
+	return i;
+}
+
+int printBuffer(){
+	extern char BUFFER[];
+	int c;
+	int i;
+	for(i=0; BUFFER[i] != EOF && i < MAXBUFFER; ++i ){
+		putc(BUFFER[i],stdout);
+	}
+}
+
+int start(){
+	//Read in looking for XEMARK_<numbersr
+	readLine();
+	if(compareStem(START, BUFFER) == FALSE){
+		printf("Invalid File. File must begin with %s and version number\n", START,stderr);
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+int loadTitle(){
+	//find and load the title into the buffer
+	int c;
+	for(c = getchar(); c != EOF && c != '@'; c=getchar())
+		;
+	//c is now either EOF or @
+	if(c != '@'){
+		printf("%s\n", "Document has no title, please specify one with the @ symbol",stderr);
+		return FALSE;
+	}
+	
+	//Ignore the @
+	c = getchar();
+
+	extern char BUFFER[];
+	int i;
+	for(i=0; i < MAXBUFFER && c != EOF && c != '\n'; ++i, c=getchar()){
+		BUFFER[i] = c;
+	}
+	lastRead = c;
+	BUFFER[i] = '\0';
+	return TRUE;
+}
+
+/* compareStem compares to make sure that the two words share a common beginning such as XEMARK_0 and XEMARK_ */
+int compareStem(char * string1, char * string2){
+	int i,j;
+	for(i=0,j=0; string1[i] != '\0' && string2[j] != '\0'; ++i, ++j){
+		if(string1[i] != string2[j])
+			return FALSE;
+	}
+	return TRUE;
+}
+
+int compare(char * string1, char * string2){
+	printf("%s\n", string1);
+	printf("%s\n", string2);
+	int i,j;
+	for(i=0,j=0; string1[i] != '\0' && string2[j] != '\0'; ++i, ++j){
+		if(string1[i] != string2[j])
+			return FALSE;
+	}
+	//Made it through but was it because one string was longer than the other?
+	if( string1[i] != string2[j] )
+		return FALSE;
+	return TRUE;
+}
+
+void openHTMLHeader(){
+	printf("%s\n", HEAD_HTML_TOP,stdout);
+}
+
+void closeHTMLHeader(){
+	printf("%s\n", HEAD_HTML_BOTTOM,stdout);
+}
+
+void closeHTMLBody(){
+	printf("%s\n", CLOSE_HTML_BODY);
+}
+
+int isSpecial(int c){
+	int p;
+	extern char SPECIAL_CHARS[];
+	for(p=0; SPECIAL_CHARS[p] != '\0'; ++p){
+		if(SPECIAL_CHARS[p] == c)
+			return TRUE;
+	}
+	return FALSE;
+}
+
+int renderFormat(){
+	//If the last read character was a newline, and the current character is a special one.
+	//Then we must render the formatter
+	if(lastRead == '\n'){
+		int length = 0;
+		length = readLine();
+		//read the line in the buffer for a format
+		if(isSpecial( BUFFER[0]) ){
+			//Handle whichever special character it is.
+			if(BUFFER[0] == '!'){
+				//Escape character, means we don't render using format, we just print
+				printf("%s\n", BUFFER);
+			}else{
+				//Formatting time:
+				
+			}
+		}
+	}
+}

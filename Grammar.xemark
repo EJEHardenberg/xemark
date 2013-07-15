@@ -1,0 +1,39 @@
+#XEMARK_0
+xemark is a simple markdown grammar that allows for simple blog html to be generated from a set of rules
+
+@XEMARK Grammer Document
+
+#Rules
+
+##In BNF:
+
+<char> ::= <ascii character>
+<text> ::= <char>, {<char>}
+<number> ::= '0' | '1' | '2' | '3' | '4' | '5'| '6' | '7' | '8' | '9' 
+<newline> ::= '\n'
+<tab> ::= '\t'
+<format_on> ::= <newline> | <tab>
+<escape> ::= '!' , <format_on>
+<header> ::= '#', {'#'}
+<item> ::= '-', {<char>}
+<list> ::= '<' <format> '>'
+<title> ::= '@', {<char>}, <newline>
+<identifier> ::= ":" <char> ,{ <char> } ":"
+<divide> ::= "=", {"="}
+<formatter> ::= <header> | <list> |  <divide> | <item>
+<format> ::= <format_on> <formatter> <newline>
+<term> ::= <formatter>[<identifier>] | <escape> | <text>
+<page> ::= <title> 
+<version> ::= <number> , {<number>}
+<start> ::= '#XEMARK_' <version> <newline>
+<document> ::= <start> <title> , [{<term>}]
+
+
+
+My personal notes:
+the number of # determine how small the header is
+you may open lists within each other
+each formatter is at the beginning of the line or indent. (it follows a newline or a tab)
+identifier is used to place id's onto elements
+documents must start with a <start> term otherwise they are invalid
+technically you can put any formatter into a list and it's valid, however should I only allow it to be items?
