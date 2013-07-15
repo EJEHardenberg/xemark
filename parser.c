@@ -175,6 +175,21 @@ void handleHeader(int length){
 	return;
 }
 
+void handleOpenList(){
+	int i,identified;
+	//Print out the beginning of the list
+	printf("<ul");
+	i=1;
+	identified = BUFFER[i] == ':' ? TRUE : FALSE;
+	if(identified){
+		printf(" id=\"");
+		for(i++; BUFFER[i] != ':' && BUFFER[i] != '\0'; ++i)
+			putc(BUFFER[i],stdout);
+		printf("\"");
+	}
+	printf(">\n");
+}
+
 int renderFormat(){
 	//If the last read character was a newline, and the current character is a special one.
 	//Then we must render the formatter
@@ -196,17 +211,7 @@ int renderFormat(){
 						handleHeader(length);
 						break;
 					case '<':
-						//Print out the beginning of the list
-						printf("<ul");
-						i=1;
-						identified = BUFFER[i] == ':' ? TRUE : FALSE;
-						if(identified){
-							printf(" id=\"");
-							for(i++; BUFFER[i] != ':' && BUFFER[i] != '\0'; ++i)
-								putc(BUFFER[i],stdout);
-							printf("\"");
-						}
-						printf(">\n");
+						handleOpenList();
 						break;
 					case '>':
 
