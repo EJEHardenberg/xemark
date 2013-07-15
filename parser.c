@@ -175,10 +175,13 @@ void handleHeader(int length){
 	return;
 }
 
-void handleOpenList(){
+void handleList(int open){
 	int i,identified;
 	//Print out the beginning of the list
-	printf("<ul");
+	if(open == TRUE)
+		printf("<ul");
+	else
+		printf("</ul");
 	i=1;
 	identified = BUFFER[i] == ':' ? TRUE : FALSE;
 	if(identified){
@@ -211,10 +214,10 @@ int renderFormat(){
 						handleHeader(length);
 						break;
 					case '<':
-						handleOpenList();
+						handleList(TRUE);
 						break;
 					case '>':
-
+						handleList(FALSE);
 						break;
 					case '-':
 
