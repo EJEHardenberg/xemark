@@ -3,13 +3,15 @@
 #include "constants.h"
 
 int readLine();
+void closeHTMLBody();
 int start(); 
 int compareStem(char *,char *);
 int compare(char *, char *);
 void openHTMLHeader();
 void closeHTMLHeader();
+void closeHTMLBody();
 
-char lastRead = -1;
+char lastRead = 0;
 
 int main()
 {
@@ -33,6 +35,8 @@ int main()
 	closeHTMLHeader();
 
 	//Now actually parse the document terms
+	while(lastRead != EOF)
+		renderFormat();
 
 	closeHTMLBody();
 	return 0;
@@ -132,7 +136,7 @@ void closeHTMLBody(){
 
 int isSpecial(int c){
 	int p;
-	extern char SPECIAL_CHARS[];
+	extern char * SPECIAL_CHARS;
 	for(p=0; SPECIAL_CHARS[p] != '\0'; ++p){
 		if(SPECIAL_CHARS[p] == c)
 			return TRUE;
@@ -148,14 +152,18 @@ int renderFormat(){
 		length = readLine();
 		//read the line in the buffer for a format
 		if(isSpecial( BUFFER[0]) ){
-			//Handle whichever special character it is.
+			//Handle whichever special character it i
 			if(BUFFER[0] == '!'){
 				//Escape character, means we don't render using format, we just print
 				printf("%s\n", BUFFER);
 			}else{
 				//Formatting time:
-				
+
 			}
+		}else{
+			//Not a special charactor. If we are in a special state that uses normal character such as :identifiers: then
+			//that will be handled seperately by the ident handler, so we just print the lines
+			printf("%s\n", BUFFER);
 		}
 	}
 }
