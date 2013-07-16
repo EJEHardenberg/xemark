@@ -84,9 +84,11 @@ int printBuffer(){
 	extern char BUFFER[];
 	int c;
 	int i;
+	printf("%s\n", "<p>");
 	for(i=0; BUFFER[i] != EOF && i < MAXBUFFER; ++i ){
 		printChar(BUFFER[i]);
 	}
+	printf("%s\n", "</p>");
 }
 
 int start(){
@@ -240,6 +242,7 @@ void handleListItem(int length){
 }
 
 int renderFormat(){
+	extern int STATE; 
 	//If the last read character was a newline, and the current character is a special one.
 	//Then we must render the formatter
 	if(lastRead == '\n' || lastRead == '\t'){
@@ -266,7 +269,7 @@ int renderFormat(){
 				printf("%s\n", BUFFER);
 			}else{
 				//Formatting time:
-				extern int STATE; STATE = FORMATTING_ON;
+				STATE = FORMATTING_ON;
 				
 				switch(BUFFER[0]){
 					case '#':
