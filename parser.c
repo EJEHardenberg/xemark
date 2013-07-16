@@ -178,6 +178,7 @@ void handleHeader(int length){
 	for(i=1; i < length && BUFFER[i] == '#'; ++i)
 		;
 	hLevel = i;
+	hLevel = i > 6 ? 6 : i;
 	printf("<h%d", hLevel);
 	//Check for an identifier:
 	if(BUFFER[i] == ':'){
@@ -242,7 +243,7 @@ void handleListItem(int length){
 }
 
 int renderFormat(){
-	extern int STATE; 
+
 	//If the last read character was a newline, and the current character is a special one.
 	//Then we must render the formatter
 	if(lastRead == '\n' || lastRead == '\t'){

@@ -1,11 +1,10 @@
-#XEMARK_0
-xemark is a simple markdown grammar that allows for simple blog html to be generated from a set of rules
 
-@XEMARK Grammer Document
+xemark is a simple markdown grammar that allows for blog html to be generated from a set of simple BNF rules
 
-#:id:Rules
+
+# Rules
 =====================
-<
+
 - All documents begin with #XEMARK_ followed by a version number.
 	<
 	- Currently the version doesn't matter so long as there is a number.
@@ -15,7 +14,9 @@ xemark is a simple markdown grammar that allows for simple blog html to be gener
 - You can use the < character to begin a list, and > to end one.
 - While creating a list, use the - to mark an item.
 - You can use the = to create a dividing line.
->
+- If you want to target html with an id, then after the format character use a :your id here: and it will be placed into the html
+- The number of # will determine the level of the header. (1-6)
+
 
 ##In BNF:
 ======================
