@@ -6,9 +6,7 @@ xemark is a simple markdown grammar that allows for blog html to be generated fr
 =====================
 
 - All documents begin with #XEMARK_ followed by a version number.
-	<
 	- Currently the version doesn't matter so long as there is a number.
-	>
 - All formatting characters are the first character of a line, or after tabs
 - If you'd like no indent whatsover, escape the formatter with a !
 - You can use the < character to begin a list, and > to end one.
@@ -21,26 +19,48 @@ xemark is a simple markdown grammar that allows for blog html to be generated fr
 ##In BNF:
 ======================
 
- <char> ::= <ascii character>
- <text> ::= <char>, {<char>}
- <number> ::= '0' | '1' | '2' | '3' | '4' | '5'| '6' | '7' | '8' | '9' 
- <newline> ::= '\n'
- <tab> ::= '\t'
- <format_on> ::= <newline> | <tab>
- <escape> ::= '!' , <format_on>
- <header> ::= '#', {'#'}
- <item> ::= '-', {<char>}
- <list> ::= '<' <format> '>'
- <title> ::= '@', {<char>}, <newline>
- <identifier> ::= ":" <char> ,{ <char> } ":"
- <divide> ::= "=", {"="}
- <formatter> ::= <header> | <list> |  <divide> | <item>
- <format> ::= <format_on> <formatter> <newline>
- <term> ::= <formatter>[<identifier>] | <escape> | <text>
- <page> ::= <title> 
- <version> ::= <number> , {<number>}
- <start> ::= '#XEMARK_' <version> <newline>
- <document> ::= <start> <title> , [{<term>}]
+<p>
+ &lt;char&gt; ::= &lt;ascii character&gt;</p>
+<p>
+ &lt;text&gt; ::= &lt;char&gt;, {&lt;char&gt;}</p>
+<p>
+ &lt;number&gt; ::= '0' | '1' | '2' | '3' | '4' | '5'| '6' | '7' | '8' | '9' </p>
+<p>
+ &lt;newline&gt; ::= '\n'</p>
+<p>
+ &lt;tab&gt; ::= '\t'</p>
+<p>
+ &lt;format_on&gt; ::= &lt;newline&gt; | &lt;tab&gt;</p>
+<p>
+ &lt;escape&gt; ::= '!' , &lt;format_on&gt;</p>
+<p>
+ &lt;header&gt; ::= '#', {'#'}</p>
+<p>
+ &lt;item&gt; ::= '-', {&lt;char&gt;}</p>
+<p>
+ &lt;list&gt; ::= '&lt;' &lt;format&gt; '&gt;'</p>
+<p>
+ &lt;title&gt; ::= '@', {&lt;char&gt;}, &lt;newline&gt;</p>
+<p>
+ &lt;identifier&gt; ::= ":" &lt;char&gt; ,{ &lt;char&gt; } ":"</p>
+<p>
+ &lt;divide&gt; ::= "=", {"="}</p>
+<p>
+ &lt;formatter&gt; ::= &lt;header&gt; | &lt;list&gt; |  &lt;divide&gt; | &lt;item&gt;</p>
+<p>
+ &lt;format&gt; ::= &lt;format_on&gt; &lt;formatter&gt; &lt;newline&gt;</p>
+<p>
+ &lt;term&gt; ::= &lt;formatter&gt;[&lt;identifier&gt;] | &lt;escape&gt; | &lt;text&gt;</p>
+<p>
+ &lt;page&gt; ::= &lt;title&gt; </p>
+<p>
+ &lt;version&gt; ::= &lt;number&gt; , {&lt;number&gt;}</p>
+<p>
+ &lt;start&gt; ::= '#XEMARK_' &lt;version&gt; &lt;newline&gt;</p>
+<p>
+ &lt;document&gt; ::= &lt;start&gt; &lt;title&gt; , [{&lt;term&gt;}]</p>
+<p>
+</p>
 
 
 
