@@ -4,7 +4,7 @@ xemark is a simple markdown grammar that allows for simple blog html to be gener
 @XEMARK Grammer Document
 
 #:id:Rules
-
+=====================
 <
 - All documents begin with #XEMARK_ followed by a version number.
 	<
@@ -14,9 +14,11 @@ xemark is a simple markdown grammar that allows for simple blog html to be gener
 - If you'd like no indent whatsover, escape the formatter with a !
 - You can use the < character to begin a list, and > to end one.
 - While creating a list, use the - to mark an item.
+- You can use the = to create a dividing line.
 >
 
 ##In BNF:
+======================
 
  <char> ::= <ascii character>
  <text> ::= <char>, {<char>}

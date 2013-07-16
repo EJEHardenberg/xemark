@@ -255,7 +255,11 @@ int renderFormat(){
 						handleListItem(length);
 						break;
 					case '=':
-
+						printf("<hr>\n");
+						for(i=1; i < length; ++i)
+							if(BUFFER[i] != '=')
+								putc(BUFFER[i],stdout);
+						printf("\n");
 						break;
 					case ':':
 						//An identifier should not appear by itself.
