@@ -84,7 +84,7 @@ An example file:
 -:cool: Cool right?
 >
 
-## You only to use one = to render an hr
+## You only need to use one = to render an hr
 =
 But visually, it's nice to see a lot of them like this:
 !============================
