@@ -134,7 +134,6 @@ void handleHeader(int length){
 	//Count the number of consectuive # and render the proper beginning of a header tag
 	for(i=1; i < length && BUFFER[i] == '#'; ++i)
 		;
-	hLevel = i;
 	hLevel = i > 6 ? 6 : i;
 	printf("<h%d", hLevel);
 	//Check for an identifier:
