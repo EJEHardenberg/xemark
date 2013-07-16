@@ -3,16 +3,6 @@
 #include "constants.h"
 #include "functions.h"
 
-int readLine();
-void closeHTMLBody();
-int start(); 
-int compareStem(char *,char *);
-int compare(char *, char *);
-void openHTMLHeader();
-void closeHTMLHeader();
-void closeHTMLBody();
-void handleHeader();
-void zeroBuffer();
 
 int main()
 {
