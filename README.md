@@ -44,12 +44,5 @@ xemark is a simple markdown grammar that allows for blog html to be generated fr
 
 
 
-
-
-My personal notes:
-the number of # determine how small the header is
-you may open lists within each other
-each formatter is at the beginning of the line or indent. (it follows a newline or a tab)
-identifier is used to place id's onto elements
 documents must start with a <start> term otherwise they are invalid
-technically you can put any formatter into a list and it's valid, however should I only allow it to be items?
+
