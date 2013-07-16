@@ -11,16 +11,14 @@ void openHTMLHeader();
 void closeHTMLHeader();
 void closeHTMLBody();
 void handleHeader();
+void zeroBuffer();
 
 char lastRead = 0;
 
 int main()
 {
 	extern char BUFFER[];
-	int i;
-	for(i=0; i < MAXBUFFER; ++i){
-		BUFFER[i] = '\0';
-	}
+	zeroBuffer();
 
 	if(start() == FALSE){
 		return 1;
@@ -35,12 +33,39 @@ int main()
 	printf("%s\n", BUFFER,stdout);
 	closeHTMLHeader();
 
+	zeroBuffer();
+
 	//Now actually parse the document terms
 	while(lastRead != EOF)
 		renderFormat();
 
 	closeHTMLBody();
 	return 0;
+}
+
+void zeroBuffer(){
+	int i;
+	for(i=0; i < MAXBUFFER; ++i){
+		BUFFER[i] = '\0';
+	}	
+}
+
+void printChar(int c){
+	switch(c){
+		case '<':
+			printf("&lt;");
+			break;
+		case '>':
+			printf("&gt");
+			break;
+		case '&':
+			printf("&amp;");
+			break;
+		default:
+			putc(c,stdout);
+			break;
+	}
+	
 }
 
 int readLine(){
@@ -60,7 +85,7 @@ int printBuffer(){
 	int c;
 	int i;
 	for(i=0; BUFFER[i] != EOF && i < MAXBUFFER; ++i ){
-		putc(BUFFER[i],stdout);
+		printChar(BUFFER[i]);
 	}
 }
 
@@ -160,16 +185,16 @@ void handleHeader(int length){
 		identified = FALSE;
 	if(identified == TRUE){
 		for(i++; BUFFER[i] != ':' && BUFFER[i] != '\0'; ++i){
-			putc(BUFFER[i],stdout);
+			printChar(BUFFER[i]);
 		}
 		printf("\">");
 	}else{
 		putc('>',stdout);
-		putc(BUFFER[i],stdout);
+		printChar(BUFFER[i]);
 	}
 	//Print out whatever is left in the buffer
 	for(i++; i < length; ++i)
-		putc(BUFFER[i],stdout);
+		printChar(BUFFER[i]);
 	printf("</h%d>\n", hLevel);
 
 	return;
@@ -187,7 +212,7 @@ void handleList(int open){
 	if(identified){
 		printf(" id=\"");
 		for(i++; BUFFER[i] != ':' && BUFFER[i] != '\0'; ++i)
-			putc(BUFFER[i],stdout);
+			printChar(BUFFER[i]);
 		printf("\"");
 	}
 	printf(">\n");
@@ -208,7 +233,7 @@ void handleListItem(int length){
 	printf(">\n");
 	//Print out the buffer
 	for(; i < length && BUFFER[i] != '\0'; ++i){
-		putc(BUFFER[i],stdout);
+		printChar(BUFFER[i]);
 	}
 	printf("\n</li>\n");
 
@@ -230,6 +255,8 @@ int renderFormat(){
 			int j;
 			for(j=0; j < length; ++j)
 				BUFFER[j] = BUFFER[j+i];
+			//End it 
+			BUFFER[j] = '\0';
 		}
 		//read the line in the buffer for a format
 		if(isSpecial( BUFFER[0]) ){
@@ -258,7 +285,7 @@ int renderFormat(){
 						printf("<hr>\n");
 						for(i=1; i < length; ++i)
 							if(BUFFER[i] != '=')
-								putc(BUFFER[i],stdout);
+								printChar(BUFFER[i]);
 						printf("\n");
 						break;
 					case ':':
@@ -272,7 +299,8 @@ int renderFormat(){
 			//Not a special charactor. If we are in a special state that uses normal character such as :identifiers: then
 			//that will be handled seperately by the ident handler, so we just print the lines... but perhaps we should
 			//detect double new lines somehow and shit out <p> tags?
-			printf("%s\n", BUFFER);
+			printBuffer();
 		}
 	}
+	zeroBuffer();
 }
