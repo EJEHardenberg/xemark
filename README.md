@@ -66,3 +66,42 @@ xemark is a simple markdown grammar that allows for blog html to be generated fr
 
 documents must start with a <start> term otherwise they are invalid
 
+To compile:
+`cc parser.c -o xemark`
+
+To use:
+`./xemark < inputfile > outputfile.html`
+
+An example file:
+```
+#XEMARK_0
+@Example Document
+======================
+#Hello World! 
+<:target:
+- This is a list
+- Of things that are interesting
+-:cool: Cool right?
+>
+
+## You only to use one = to render an hr
+=
+But visually, it's nice to see a lot of them like this:
+!============================
+
+Notice that the ! escapes a formatter.
+
+Format characters will render their line in the format way if they're the first character on a line, or after a sequence of tabs. This lets you do listed nests:
+<
+- Top level item
+	<
+		-It's nice to be able to write this out like this with the tabs for visual appeal of the source file
+		-And plus it makes sense for listed nests
+	>
+- Right?
+	-Although it;s
+		-Not like
+			-indenting it starts a new list though
+>
+: A colon first won't do much for you.
+
