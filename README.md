@@ -110,3 +110,6 @@ to compile this file down, you might do:
 
 ```
 
+
+If you want to run the file in a sort of 'interpretted mode', you can simply run ./a.out, type #XEMARK_0 \n @title
+and type to your hearts content, seeing what the parser will generate as you type. When you're done, send an EOF to the stream to quit (typically Ctrl+D)
