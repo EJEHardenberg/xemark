@@ -6,8 +6,14 @@ xemark is a simple markdown grammar that allows for simple blog html to be gener
 #:id:Rules
 
 <
+- All documents begin with #XEMARK_ followed by a version number.
+	<
+	- Currently the version doesn't matter so long as there is a number.
+	>
 - All formatting characters are the first character of a line
 - If you'd like no indent whatsover, escape the formatter with a !
+- You can use the < character to begin a list, and > to end one.
+- While creating a list, use the - to mark an item.
 >
 
 ##In BNF:

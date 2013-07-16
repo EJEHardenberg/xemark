@@ -217,9 +217,20 @@ void handleListItem(int length){
 int renderFormat(){
 	//If the last read character was a newline, and the current character is a special one.
 	//Then we must render the formatter
-	if(lastRead == '\n'){
+	if(lastRead == '\n' || lastRead == '\t'){
 		int length = 0;
+		int i,identified;
 		length = readLine();
+
+		if(BUFFER[0] == '\t'){
+			//seek to the first non tab
+			for(i=1; BUFFER[i] == '\t'; ++i)
+				;
+			//shift everything over
+			int j;
+			for(j=0; j < length; ++j)
+				BUFFER[j] = BUFFER[j+i];
+		}
 		//read the line in the buffer for a format
 		if(isSpecial( BUFFER[0]) ){
 			//Handle whichever special character it i
@@ -229,7 +240,7 @@ int renderFormat(){
 			}else{
 				//Formatting time:
 				extern int STATE; STATE = FORMATTING_ON;
-				int i,identified;
+				
 				switch(BUFFER[0]){
 					case '#':
 						handleHeader(length);
