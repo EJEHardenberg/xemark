@@ -1,6 +1,7 @@
 extern char lastRead ;
 
 void zeroBuffer(){
+	extern char BUFFER[];
 	int i;
 	for(i=0; i < MAXBUFFER; ++i){
 		BUFFER[i] = '\0';
@@ -49,6 +50,7 @@ int printBuffer(){
 }
 
 int start(){
+	extern char BUFFER[];
 	//Read in looking for XEMARK_<numbersr
 	readLine();
 	if(compareStem(START, BUFFER) == FALSE){
@@ -130,6 +132,7 @@ int isSpecial(int c){
 }
 
 void handleHeader(int length){
+	extern char BUFFER[];
 	int i,hLevel,identified;
 	//Count the number of consectuive # and render the proper beginning of a header tag
 	for(i=1; i < length && BUFFER[i] == '#'; ++i)
@@ -160,6 +163,7 @@ void handleHeader(int length){
 }
 
 void handleList(int open){
+	extern char BUFFER[];
 	int i,identified;
 	//Print out the beginning of the list
 	if(open == TRUE)
@@ -178,6 +182,7 @@ void handleList(int open){
 }
 
 void handleListItem(int length){
+	extern char BUFFER[];
 	int i, identified;
 	printf("<li");
 	i=1;
@@ -199,7 +204,7 @@ void handleListItem(int length){
 }
 
 int renderFormat(){
-
+	extern char BUFFER[];
 	//If the last read character was a newline, and the current character is a special one.
 	//Then we must render the formatter
 	if(lastRead == '\n' || lastRead == '\t'){

@@ -3,7 +3,6 @@
 #include "constants.h"
 #include "functions.h"
 
-
 int main()
 {
 	extern char BUFFER[];
@@ -31,4 +30,3 @@ int main()
 	closeHTMLBody();
 	return 0;
 }
-
