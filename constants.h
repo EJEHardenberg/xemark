@@ -13,7 +13,10 @@ char * SPECIAL_CHARS = "#<>-!=:\t";
 char lastRead = 0;
 
 #define HEAD_HTML_TOP "<html><head><title>"
-#define HEAD_HTML_BOTTOM "</title></head><body>"
+#define HEAD_HTML_LINK_START "<link rel=\"stylesheet\" type=\"text/css\" href=\""
+#define HEAD_HTML_LINK_STOP ".css\">"
+#define HEAD_HTML_TITLE_STOP "</title>"
+#define HEAD_HTML_BOTTOM "</head><body>"
 #define CLOSE_HTML_BODY "</body></html>"
 
 //States

@@ -2,6 +2,10 @@
 xemark is a simple markdown grammar that allows for simple blog html to be generated from a set of rules
 
 @XEMARK Grammer Document
+~style
+~secondstyle
+~as long as these are consecutive they'll render
+
 
 #:id:Rules
 =====================
@@ -15,6 +19,7 @@ xemark is a simple markdown grammar that allows for simple blog html to be gener
 - You can use the < character to begin a list, and > to end one.
 - While creating a list, use the - to mark an item.
 - You can use the = to create a dividing line.
+- styles are directly beneath the title or else they will not be rendered
 >
 
 ##In BNF:
@@ -31,11 +36,13 @@ xemark is a simple markdown grammar that allows for simple blog html to be gener
  <item> ::= '-', {<char>}
  <list> ::= '<' <format> '>'
  <title> ::= '@', {<char>}, <newline>
+ <style> ::= '~', {<char>}
  <identifier> ::= ":" <char> ,{ <char> } ":"
  <divide> ::= "=", {"="}
- <formatter> ::= <header> | <list> |  <divide> | <item>
+ <formatter> ::= <header> | <list> |  <divide> | <item> 
  <format> ::= <format_on> <formatter> <newline>
- <term> ::= <formatter>[<identifier>] | <escape> | <text>
+ <style format> ::= <title> <newline> <style>
+ <term> ::= <formatter>[<identifier>] | <escape> | <text> | <style format>
  <page> ::= <title> 
  <version> ::= <number> , {<number>}
  <start> ::= '#XEMARK_' <version> <newline>
@@ -52,3 +59,4 @@ each formatter is at the beginning of the line or indent. (it follows a newline 
 identifier is used to place id's onto elements
 documents must start with a <start> term otherwise they are invalid
 technically you can put any formatter into a list and it's valid, however should I only allow it to be items?
+style's chars are the name of the file we'll include as a style

@@ -6,6 +6,7 @@
 int main()
 {
 	extern char BUFFER[];
+	extern char lastRead;
 	zeroBuffer();
 
 	if(start() == FALSE){
@@ -19,6 +20,13 @@ int main()
 	}
 
 	printf("%s\n", BUFFER,stdout);
+	closeTitle();
+
+	//Find links to css and render each
+	//Does the line after the title contain a ~?
+	if(checkForStyle() == TRUE)
+		renderStyle();
+
 	closeHTMLHeader();
 
 	zeroBuffer();

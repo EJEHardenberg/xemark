@@ -113,6 +113,18 @@ void openHTMLHeader(){
 	printf("%s\n", HEAD_HTML_TOP,stdout);
 }
 
+void closeTitle(){
+	printf("%s\n", HEAD_HTML_TITLE_STOP);
+}
+
+void openLinkHTML(){
+	printf("%s", HEAD_HTML_LINK_START);
+}
+
+void closeLinkHTML(){
+	printf("%s", HEAD_HTML_LINK_STOP);
+}
+
 void closeHTMLHeader(){
 	printf("%s\n", HEAD_HTML_BOTTOM,stdout);
 }
@@ -268,4 +280,30 @@ int renderFormat(){
 		}
 	}
 	zeroBuffer();
+}
+
+int checkForStyle(){
+	int c;
+	c = getchar();
+	if(c == '~'){
+		ungetc(c,stdin);
+		return TRUE;
+	}else{
+		//If we don't have style, then we push the char back on for use after the html header is rendered
+		ungetc(c,stdin);
+		return FALSE;
+	}
+}
+
+void renderStyle(){
+	int length = readLine();
+	openLinkHTML();
+	int j;
+	for(j=0; j < length; ++j)
+		BUFFER[j] = BUFFER[j+1];
+	printf("%s", BUFFER);
+	closeLinkHTML();
+	//Allow for more than one.
+	while(checkForStyle() == TRUE)
+		renderStyle();
 }
