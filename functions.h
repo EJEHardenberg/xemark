@@ -1,5 +1,9 @@
 extern char lastRead ;
 
+
+void printLink(int cut, int length);
+
+
 void zeroBuffer(){
 	extern char BUFFER[];
 	int i;
@@ -276,10 +280,37 @@ int renderFormat(){
 			//Not a special charactor. If we are in a special state that uses normal character such as :identifiers: then
 			//that will be handled seperately by the ident handler, so we just print the lines... but perhaps we should
 			//detect double new lines somehow and shit out <p> tags?
-			printBuffer();
+			//Check the buffer for links 
+			int i;
+			int cut = 0;
+			for(i = 0; i < length && i < MAXBUFFER -1; ++i){
+				if(BUFFER[i] == '-')
+					if(BUFFER[i+1] == '>'){
+						//We've detected a link!
+						//all text to the left will be link text, all to the right will be the url (minus any space)
+						cut = i;;
+					}
+			}
+			if(cut == 0)
+				printBuffer();
+			else{
+				printLink(cut,length);
+			}
 		}
 	}
 	zeroBuffer();
+}
+
+void printLink(int cut, int length){
+	//Handle printing the link
+	int i;
+	printf("<a href=\"");
+	for(i = cut +2; i < length; ++i)
+		printChar(BUFFER[i]);
+	printf("\">");
+	for(i = 0; i < cut; ++i)
+		printChar(BUFFER[i]);
+	printf("</a>");
 }
 
 int checkForStyle(){

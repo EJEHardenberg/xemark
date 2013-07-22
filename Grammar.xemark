@@ -20,6 +20,7 @@ xemark is a simple markdown grammar that allows for simple blog html to be gener
 - While creating a list, use the - to mark an item.
 - You can use the = to create a dividing line.
 - styles are directly beneath the title or else they will not be rendered
+- Links are rendered with -> with the link text on the left and the link url on the right ->
 >
 
 ##In BNF:
@@ -42,7 +43,8 @@ xemark is a simple markdown grammar that allows for simple blog html to be gener
  <formatter> ::= <header> | <list> |  <divide> | <item> 
  <format> ::= <format_on> <formatter> <newline>
  <style format> ::= <title> <newline> <style>
- <term> ::= <formatter>[<identifier>] | <escape> | <text> | <style format>
+ <link> ::= <char>, {<char>} '-','>', <char>, {<char>}
+ <term> ::= <formatter>[<identifier>] | <escape> | <text> | <style format> | <link>
  <page> ::= <title> 
  <version> ::= <number> , {<number>}
  <start> ::= '#XEMARK_' <version> <newline>
