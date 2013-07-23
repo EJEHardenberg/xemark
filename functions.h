@@ -1,4 +1,5 @@
 extern char lastRead ;
+extern int paragraphCount; 
 
 void zeroBuffer(){
 	extern char BUFFER[];
@@ -34,6 +35,16 @@ int readLine(){
 		BUFFER[i] = c;
 	}
 	BUFFER[i] = '\0';
+	//if we had just a newline, then we only ever put a null in.
+	if(BUFFER[0] == '\0'){
+		//Do a look ahead:
+		int lookahead = getchar();
+		if(lookahead == '\n')
+			printf("</p><p>\n");
+		//put it back
+		ungetc(lookahead,stdin);
+	}
+
 	lastRead = c;
 	return i;
 }
@@ -75,11 +86,9 @@ int printBuffer(int length){
 			}
 	}
 	if(cut == 0){
-		//printf("%s\n", "<p>");
-		for(i=0; BUFFER[i] != EOF && i < MAXBUFFER; ++i ){
+		for(i=0; BUFFER[i] != EOF && i < MAXBUFFER && i < length; ++i ){
 			printChar(BUFFER[i]);
 		}
-		//printf("%s\n", "</p>");
 	}else{
 		printLink(begin,cut,length);
 	}
@@ -163,11 +172,11 @@ void closeLinkHTML(){
 }
 
 void closeHTMLHeader(){
-	printf("%s\n", HEAD_HTML_BOTTOM,stdout);
+	printf("%s<p>\n", HEAD_HTML_BOTTOM,stdout);
 }
 
 void closeHTMLBody(){
-	printf("%s\n", CLOSE_HTML_BODY);
+	printf("</p>%s\n", CLOSE_HTML_BODY);
 }
 
 int isSpecial(int c){
@@ -205,8 +214,12 @@ void handleHeader(int length){
 	}
 	//Print out whatever is left in the buffer
 	//First shift all chars down
-	for(i++; i < length; ++i)
-		printChar(BUFFER[i]);
+	int j;
+	for(i++,j=0; i < length; ++i,++j)
+		BUFFER[j] = BUFFER[i];
+	BUFFER[j] = '\0';
+	//Zero out the rest
+	printBuffer(j);
 	printf("</h%d>\n", hLevel);
 
 	return;

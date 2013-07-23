@@ -33,7 +33,7 @@ xemark is a simple markdown grammar that allows for simple blog html to be gener
  <tab> ::= '\t'
  <format_on> ::= <newline> | <tab>
  <escape> ::= '!' , <format_on>
- <header> ::= '#', {'#'}
+ <header> ::= '#', {'#'} , ' ',' ', {<char>}
  <item> ::= '-', {<char>}
  <list> ::= '<' <format> '>'
  <title> ::= '@', {<char>}, <newline>
@@ -62,3 +62,4 @@ identifier is used to place id's onto elements
 documents must start with a <start> term otherwise they are invalid
 technically you can put any formatter into a list and it's valid, however should I only allow it to be items?
 style's chars are the name of the file we'll include as a style
+you must have at least a double space between headers ending # (or id) and the header text

@@ -11,6 +11,7 @@ char BUFFER[MAXBUFFER];
 char * START  = "#XEMARK_";
 char * SPECIAL_CHARS = "#<>-!=:\t";
 char lastRead = 0;
+int paragraphCount = 0;
 
 #define HEAD_HTML_TOP "<html><head><title>"
 #define HEAD_HTML_LINK_START "<link rel=\"stylesheet\" type=\"text/css\" href=\""
