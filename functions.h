@@ -258,10 +258,14 @@ void handleListItem(int length){
 		i++;
 	}
 	printf(">\n");
-	//Print out the buffer
-	for(; i < length && BUFFER[i] != '\0'; ++i){
-		printChar(BUFFER[i]);
+	//shift and print
+	int j;
+
+	for(j=0; i < length && BUFFER[i] != '\0'; ++i,++j){
+		BUFFER[j] = BUFFER[i];
 	}
+	BUFFER[j] = '\0';
+	printBuffer(j);
 	printf("\n</li>\n");
 
 }
