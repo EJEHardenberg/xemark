@@ -1,9 +1,5 @@
 extern char lastRead ;
 
-
-void printLink(int cut, int length);
-
-
 void zeroBuffer(){
 	extern char BUFFER[];
 	int i;
@@ -42,20 +38,57 @@ int readLine(){
 	return i;
 }
 
-int printBuffer(){
+void printLink(int begin, int cut, int length){
+	int i;
+	//Print non link text:
+	for(i = 0; i < begin; ++i)
+		printChar(BUFFER[i]);
+	//Handle printing the link
+	printf("<a href=\"");
+	for(i = cut +2; i < length; ++i)
+		printChar(BUFFER[i]);
+	printf("\">");
+	for(i = begin; i < cut; ++i)
+		printChar(BUFFER[i]);
+	printf("</a>");
+}
+
+int printBuffer(int length){
 	extern char BUFFER[];
 	int c;
 	int i;
-	printf("%s\n", "<p>");
-	for(i=0; BUFFER[i] != EOF && i < MAXBUFFER; ++i ){
-		printChar(BUFFER[i]);
+	//Check the buffer for links 
+	int cut = 0;
+	int begin = 0;
+	for(i = 0; i < length && i < MAXBUFFER -1; ++i){
+		if(BUFFER[i] == '-')
+			if(BUFFER[i+1] == '>'){
+				//We've detected a link!
+				//first text to the left will be link text, all to the right will be the url (minus any space)
+				cut = i;;
+				//-2 becuase we skip a single space that might be by the ->
+				for(begin = i; begin > 2 && BUFFER[begin-2] != ' '; --begin)
+					;
+				//Make up for the -2 cutting us one char short of a full word
+				begin--;
+
+			}
 	}
-	printf("%s\n", "</p>");
+	if(cut == 0){
+		//printf("%s\n", "<p>");
+		for(i=0; BUFFER[i] != EOF && i < MAXBUFFER; ++i ){
+			printChar(BUFFER[i]);
+		}
+		//printf("%s\n", "</p>");
+	}else{
+		printLink(begin,cut,length);
+	}
+	
 }
 
 int start(){
 	extern char BUFFER[];
-	//Read in looking for XEMARK_<numbersr
+	//Read in looking for XEMARK_<numbers>
 	readLine();
 	if(compareStem(START, BUFFER) == FALSE){
 		printf("Invalid File. File must begin with %s and version number\n", START,stderr);
@@ -171,6 +204,7 @@ void handleHeader(int length){
 		printChar(BUFFER[i]);
 	}
 	//Print out whatever is left in the buffer
+	//First shift all chars down
 	for(i++; i < length; ++i)
 		printChar(BUFFER[i]);
 	printf("</h%d>\n", hLevel);
@@ -280,38 +314,14 @@ int renderFormat(){
 			//Not a special charactor. If we are in a special state that uses normal character such as :identifiers: then
 			//that will be handled seperately by the ident handler, so we just print the lines... but perhaps we should
 			//detect double new lines somehow and shit out <p> tags?
-			//Check the buffer for links 
-			int i;
-			int cut = 0;
-			for(i = 0; i < length && i < MAXBUFFER -1; ++i){
-				if(BUFFER[i] == '-')
-					if(BUFFER[i+1] == '>'){
-						//We've detected a link!
-						//all text to the left will be link text, all to the right will be the url (minus any space)
-						cut = i;;
-					}
-			}
-			if(cut == 0)
-				printBuffer();
-			else{
-				printLink(cut,length);
-			}
+			printBuffer(length);
+	
 		}
 	}
 	zeroBuffer();
 }
 
-void printLink(int cut, int length){
-	//Handle printing the link
-	int i;
-	printf("<a href=\"");
-	for(i = cut +2; i < length; ++i)
-		printChar(BUFFER[i]);
-	printf("\">");
-	for(i = 0; i < cut; ++i)
-		printChar(BUFFER[i]);
-	printf("</a>");
-}
+
 
 int checkForStyle(){
 	int c;
