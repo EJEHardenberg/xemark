@@ -90,7 +90,17 @@ int printBuffer(int length){
 					;
 				//Make up for the -2 cutting us one char short of a full word
 				begin--;
-
+				/**BEGIN HERE ETHAN ON THE BUS.
+				PSEUDO CODE:
+					\b where that ; is on line 90 so we remove the printed text
+					print <a href=" 
+					print out the text until ' '
+					print ">
+					print out from begin to cut (-1?)
+					print </a>
+					put a space.
+					continue printing in the for loop. :D 
+				*/
 			}
 	}
 	if(cut == 0){
