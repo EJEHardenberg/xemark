@@ -87,30 +87,25 @@ int printBuffer(int length){
 				cut = i;;
 				//-2 becuase we skip a single space that might be by the ->
 				for(begin = i; begin > 2 && BUFFER[begin-2] != ' '; --begin)
-					;
+					putc('\b',stdout);
 				//Make up for the -2 cutting us one char short of a full word
 				begin--;
-				/**BEGIN HERE ETHAN ON THE BUS.
-				PSEUDO CODE:
-					\b where that ; is on line 90 so we remove the printed text
-					print <a href=" 
-					print out the text until ' '
-					print ">
-					print out from begin to cut (-1?)
-					print </a>
-					put a space.
-					continue printing in the for loop. :D 
-				*/
+				putc('\b',stdout);
+				printf("<a href=\"");
+				//Move i past the > and a space after it
+				i += 2;
+				while(BUFFER[i] == ' ')
+					++i;
+				for(; i < length && BUFFER[i] != ' ' && BUFFER[i] != '\n'; ++i)
+					printChar(BUFFER[i]);
+				printf("\">");
+				//print out the part we cut out with begin
+				for(; begin < cut; begin++)
+					printChar(BUFFER[begin]);
+				printf("</a>");
 			}
+		printChar(BUFFER[i]);
 	}
-	if(cut == 0){
-		for(i=0; BUFFER[i] != EOF && i < MAXBUFFER && i < length; ++i ){
-			printChar(BUFFER[i]);
-		}
-	}else{
-		printLink(begin,cut,length);
-	}
-	
 }
 
 int start(){
