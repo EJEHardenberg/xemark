@@ -53,29 +53,23 @@ void printLink(int begin, int cut, int length){
 	int i;
 	int temp;
 	//Print non link text:
-	for(i = 0; i < begin; ++i)
-		printChar(BUFFER[i]);
+	/* 
+		This is where the problem is. We printchar everything before cut, thus rendering the
+		links before the last one. We need to call printBuffer here
+	*/
+		printBuffer(begin);
+	
 	//Handle printing the link
 	printf("<a href=\"");
 	for(i = cut +2; i < length && BUFFER[i+1] != ' ' ; ++i){
 		printChar(BUFFER[i]);
 	}
 	printChar(BUFFER[i]);
-	temp = i+1;
 	printf("\">");
 	for(i = begin; i < cut; ++i)
 		printChar(BUFFER[i]);
 	printf("</a>");
-	//Handle extra text in the link
-	//Shift the buffer down
-	if(temp < length){
-		//shift
-		for(i=0; temp < length; temp++,++i){
-			BUFFER[i] = BUFFER[temp];
-		}
-		BUFFER[i] = '\0';
-		printBuffer(i);
-	}
+	
 }
 
 int printBuffer(int length){
