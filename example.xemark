@@ -30,4 +30,4 @@ Format characters will render their line in the format way if they're the first 
 : A colon first won't do much for you.
 
 This should be a link ->to_this_address 
-- No? ->yes and so that no link points to yes. and this -> points_to_here 
+- No? ->yes and so that no link points to yes. and this -> points_to_here so hopefully this all works out

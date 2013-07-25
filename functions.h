@@ -60,13 +60,13 @@ int printBuffer(int length){
 		TEMPBUFFER[c] = ' ';
 	TEMPBUFFER[c-1] = '\0';
 
-	int i,j,k,backwards;
+	int i,j,k,backwards,t;
 
 	//Check the buffer for links 
 	int cut = 0;
 	int begin = 0;
 	int linkTextLength = 0;
-	for(i = 0; i < length && i < MAXBUFFER -1; ++i){
+	for(i = 0,t=0; i < length && i < MAXBUFFER -1; ++i,++t){
 		//reset counters
 		c=j=k=backwards=linkTextLength=0;
 		if(BUFFER[i] == '-')
@@ -86,29 +86,32 @@ int printBuffer(int length){
 				i += 2;
 				while(BUFFER[i] == ' ')
 					++i;
+				//move t back
 				backwards = i - backwards;
-				for(j=0; BEGIN_HREF[j] != '\0'; ++i,++j)
-					TEMPBUFFER[i-backwards-linkTextLength] = BEGIN_HREF[j];
-				for(; i-j < length && BUFFER[i-j] != ' ' && BUFFER[i-j] != '\n'; ++i)
-					TEMPBUFFER[i-backwards-linkTextLength] = BUFFER[i-j];
+				t = t - linkTextLength;
+				for(j=0; BEGIN_HREF[j] != '\0'; ++t,++j)
+					TEMPBUFFER[t] = BEGIN_HREF[j];
+				for(; i < length && BUFFER[i] != ' ' && BUFFER[i] != '\n'; ++i,++t)
+					TEMPBUFFER[t] = BUFFER[i];
 
 				//Print out end to href
 				char * END_HREF = "\">";
-				for(k=0; END_HREF[k] != '\0'; ++k,++i)
-					TEMPBUFFER[i-backwards-linkTextLength] = END_HREF[k];
+				for(k=0; END_HREF[k] != '\0'; ++k,++t)
+					TEMPBUFFER[t] = END_HREF[k];
 				//print out the part we cut out with begin
-				for(; begin < cut; ++begin,++i)
-					TEMPBUFFER[i-backwards-linkTextLength] = BUFFER[begin];
+				for(; begin < cut; ++begin,++t)
+					TEMPBUFFER[t] = BUFFER[begin];
 
 				char * END_ANCHOR = "</a>";
-				for(c=0; END_ANCHOR[c] != '\0'; ++c,++i)
-					TEMPBUFFER[i-backwards-linkTextLength] = END_ANCHOR[c];
+				for(c=0; END_ANCHOR[c] != '\0'; ++c,++t)
+					TEMPBUFFER[t] = END_ANCHOR[c];
 
 			}
-		TEMPBUFFER[i-backwards-linkTextLength] = BUFFER[i-c-j-k];
+		
+		TEMPBUFFER[t] = BUFFER[i];
 		
 	}
-	TEMPBUFFER[i] = '\0';
+	TEMPBUFFER[t] = '\0';
 	printf("%s\n", TEMPBUFFER);
 	/*
 	for(c=0; TEMPBUFFER[c] != '\0'; ++c)
