@@ -21,7 +21,7 @@ void printChar(int c){
 			printf("&amp;");
 			break;
 		default:
-			putc(c,stdout);
+			printf("%c",c);
 			break;
 	}
 	
@@ -49,63 +49,71 @@ int readLine(){
 	return i;
 }
 
-void printLink(int begin, int cut, int length){
-	int i;
-	int temp;
-	//Print non link text:
-	/* 
-		This is where the problem is. We printchar everything before cut, thus rendering the
-		links before the last one. We need to call printBuffer here
-	*/
-		printBuffer(begin);
-	
-	//Handle printing the link
-	printf("<a href=\"");
-	for(i = cut +2; i < length && BUFFER[i+1] != ' ' ; ++i){
-		printChar(BUFFER[i]);
-	}
-	printChar(BUFFER[i]);
-	printf("\">");
-	for(i = begin; i < cut; ++i)
-		printChar(BUFFER[i]);
-	printf("</a>");
-	
-}
 
 int printBuffer(int length){
 	extern char BUFFER[];
+
+	//Setup and clear temp buffer
+	char TEMPBUFFER[MAXBUFFER];
 	int c;
-	int i;
+	for(c=0; c < MAXBUFFER; ++c)
+		TEMPBUFFER[c] = ' ';
+	TEMPBUFFER[c-1] = '\0';
+
+	int i,j,k,backwards;
+
 	//Check the buffer for links 
 	int cut = 0;
 	int begin = 0;
+	int linkTextLength = 0;
 	for(i = 0; i < length && i < MAXBUFFER -1; ++i){
+		//reset counters
+		c=j=k=backwards=linkTextLength=0;
 		if(BUFFER[i] == '-')
 			if(BUFFER[i+1] == '>'){
 				//We've detected a link!
-				//first text to the left will be link text, all to the right will be the url (minus any space)
 				cut = i;;
+
 				//-2 becuase we skip a single space that might be by the ->
 				for(begin = i; begin > 2 && BUFFER[begin-2] != ' '; --begin)
-					putc('\b',stdout);
+					;
 				//Make up for the -2 cutting us one char short of a full word
 				begin--;
-				putc('\b',stdout);
-				printf("<a href=\"");
+				linkTextLength = cut - begin;
+				char * BEGIN_HREF = "<a href=\"";
 				//Move i past the > and a space after it
+				backwards = i;
 				i += 2;
 				while(BUFFER[i] == ' ')
 					++i;
-				for(; i < length && BUFFER[i] != ' ' && BUFFER[i] != '\n'; ++i)
-					printChar(BUFFER[i]);
-				printf("\">");
+				backwards = i - backwards;
+				for(j=0; BEGIN_HREF[j] != '\0'; ++i,++j)
+					TEMPBUFFER[i-backwards-linkTextLength] = BEGIN_HREF[j];
+				for(; i-j < length && BUFFER[i-j] != ' ' && BUFFER[i-j] != '\n'; ++i)
+					TEMPBUFFER[i-backwards-linkTextLength] = BUFFER[i-j];
+
+				//Print out end to href
+				char * END_HREF = "\">";
+				for(k=0; END_HREF[k] != '\0'; ++k,++i)
+					TEMPBUFFER[i-backwards-linkTextLength] = END_HREF[k];
 				//print out the part we cut out with begin
-				for(; begin < cut; begin++)
-					printChar(BUFFER[begin]);
-				printf("</a>");
+				for(; begin < cut; ++begin,++i)
+					TEMPBUFFER[i-backwards-linkTextLength] = BUFFER[begin];
+
+				char * END_ANCHOR = "</a>";
+				for(c=0; END_ANCHOR[c] != '\0'; ++c,++i)
+					TEMPBUFFER[i-backwards-linkTextLength] = END_ANCHOR[c];
+
 			}
-		printChar(BUFFER[i]);
+		TEMPBUFFER[i-backwards-linkTextLength] = BUFFER[i-c-j-k];
+		
 	}
+	TEMPBUFFER[i] = '\0';
+	printf("%s\n", TEMPBUFFER);
+	/*
+	for(c=0; TEMPBUFFER[c] != '\0'; ++c)
+		printChar(TEMPBUFFER[c]);
+	*/
 }
 
 int start(){
