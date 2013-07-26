@@ -1,0 +1,17 @@
+#XEMARK_0
+@Congratulations on using the mark server!
+
+#Hey there! Congrats!
+========================================================
+
+Looks like you figured out that if you ran "python mark-server.py" and then navigated to localhost:1337/example.xe you'd see this page!
+
+Isn't it great that
+<
+	- Python has such a nice simple_server built right in from the wsgiref module?
+	- That you can easily call system processes using the os module (or subprocess module)
+	- That it's only 36 lines of python code to put in some basic serving of only xe files?
+	- That C is such a powerful language?
+>
+
+I hope you get a kick out of xemark, and that you never ever use this mark-server.py script to run anything in production! (See warnings in wsgiref from the python help function for why)

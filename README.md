@@ -16,55 +16,10 @@ xemark is a simple markdown grammar that allows for blog html to be generated fr
 - The number of # will determine the level of the header. (1-6)
 
 
-##In BNF:
-======================
-
-<p>
- &lt;char&gt; ::= &lt;ascii character&gt;</p>
-<p>
- &lt;text&gt; ::= &lt;char&gt;, {&lt;char&gt;}</p>
-<p>
- &lt;number&gt; ::= '0' | '1' | '2' | '3' | '4' | '5'| '6' | '7' | '8' | '9' </p>
-<p>
- &lt;newline&gt; ::= '\n'</p>
-<p>
- &lt;tab&gt; ::= '\t'</p>
-<p>
- &lt;format_on&gt; ::= &lt;newline&gt; | &lt;tab&gt;</p>
-<p>
- &lt;escape&gt; ::= '!' , &lt;format_on&gt;</p>
-<p>
- &lt;header&gt; ::= '#', {'#'}</p>
-<p>
- &lt;item&gt; ::= '-', {&lt;char&gt;}</p>
-<p>
- &lt;list&gt; ::= '&lt;' &lt;format&gt; '&gt;'</p>
-<p>
- &lt;title&gt; ::= '@', {&lt;char&gt;}, &lt;newline&gt;</p>
-<p>
- &lt;identifier&gt; ::= ":" &lt;char&gt; ,{ &lt;char&gt; } ":"</p>
-<p>
- &lt;divide&gt; ::= "=", {"="}</p>
-<p>
- &lt;formatter&gt; ::= &lt;header&gt; | &lt;list&gt; |  &lt;divide&gt; | &lt;item&gt;</p>
-<p>
- &lt;format&gt; ::= &lt;format_on&gt; &lt;formatter&gt; &lt;newline&gt;</p>
-<p>
- &lt;term&gt; ::= &lt;formatter&gt;[&lt;identifier&gt;] | &lt;escape&gt; | &lt;text&gt;</p>
-<p>
- &lt;page&gt; ::= &lt;title&gt; </p>
-<p>
- &lt;version&gt; ::= &lt;number&gt; , {&lt;number&gt;}</p>
-<p>
- &lt;start&gt; ::= '#XEMARK_' &lt;version&gt; &lt;newline&gt;</p>
-<p>
- &lt;document&gt; ::= &lt;start&gt; &lt;title&gt; , [{&lt;term&gt;}]</p>
-<p>
-</p>
+See the Grammaer.xe file for the BNF grammar of the xemark language
 
 
-
-documents must start with a <start> term otherwise they are invalid
+documents must start with a &lt;start&gt; term otherwise they are invalid
 
 To compile:
 `cc parser.c -o xemark`
@@ -108,8 +63,13 @@ Format characters will render their line in the format way if they're the first 
 to compile this file down, you might do:
 ./xemark < example.xemark > example.html
 
+Also you can link to things using a -&gt; between the link text and the link url. So a link like this -&gt; points_to_here. this -> points_to_here
+
 ```
 
 
 If you want to run the file in a sort of 'interpretted mode', you can simply run ./a.out, type #XEMARK_0 \n @title
 and type to your hearts content, seeing what the parser will generate as you type. When you're done, send an EOF to the stream to quit (typically Ctrl+D)
+
+
+There is also the mark-server which is an extremely simple python server that will serve up xe files with it's current directory as root.
